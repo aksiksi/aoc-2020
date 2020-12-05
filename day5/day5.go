@@ -36,20 +36,16 @@ func getID(seat string) int {
 	pos := len(seat) - 1
 
 	// Convert seat string to bits
-	val := 0
 	for _, c := range seat {
 		if c == 'B' || c == 'R' {
-			val |= (1 << pos)
+			n |= (1 << pos)
 		}
 
 		pos--
 	}
 
-	col := val & 0b111
-	row := val >> 3
-
-	n = row*8 + col
-
+	// No manipulation is needed because the row is _already_
+	// multiplied by 8 (shifted by 3 bits)
 	return n
 }
 
