@@ -26,32 +26,27 @@ func readInput() []string {
 	return data
 }
 
+// Convert the seat string to an integer ID
+// Each seat string is basically a concatenation of two
+// binary numbers:
+//   1. Row: bits 9-3
+//   2. Col: bits 2-0
 func getID(seat string) int {
 	n := 0
+	pos := len(seat) - 1
 
-	rowPart := seat[:7]
-	colPart := seat[7:]
-	rowPos := 6
-	colPos := 2
-
-	row := 0
-	col := 0
-
-	for _, c := range rowPart {
-		if c == 'B' {
-			row |= (1 << rowPos)
+	// Convert seat string to bits
+	val := 0
+	for _, c := range seat {
+		if c == 'B' || c == 'R' {
+			val |= (1 << pos)
 		}
 
-		rowPos--
+		pos--
 	}
 
-	for _, c := range colPart {
-		if c == 'R' {
-			col |= (1 << colPos)
-		}
-
-		colPos--
-	}
+	col := val & 0b111
+	row := val >> 3
 
 	n = row*8 + col
 
